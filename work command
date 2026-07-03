@@ -10,3 +10,5 @@ git add . --------- add all files
 venv/Scripts/activate
 
 Set-ExecutionPolicy -Scope CurrentUser -ExecutionPolicy RemoteSigned venv +
+
+pip install audioop-lts

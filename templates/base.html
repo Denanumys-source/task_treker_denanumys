@@ -1,135 +1,21 @@
 <!DOCTYPE html>
-<html lang="uk">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Task Manager / Менеджер завдань</title>
-    <!-- Підключення Tailwind CSS для стильного дизайну -->
-    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-    <!-- Іконки Lucide (опціонально для краси) -->
-    <script src="https://unpkg.com/lucide@latest"></script>
+    <title>Task Tracker</title>
 </head>
-<body class="bg-slate-900 text-slate-100 min-h-screen flex items-center justify-center p-4">
+<body>
+<h1>Task Tracker</h1>
+{% for t in tasks%}
 
-    <div class="w-full max-w-md bg-slate-800 rounded-2xl shadow-xl border border-slate-700 p-6">
-        <!-- Заголовок -->
-        <div class="flex items-center justify-between mb-6">
-            <h1 class="text-2xl font-bold tracking-tight bg-gradient-to-r from-violet-400 to-indigo-400 bg-clip-text text-transparent flex items-center gap-2">
-                <i data-lucide="check-square" class="text-violet-400"></i> Task Manager
-            </h1>
-            <span id="task-counter" class="text-xs bg-slate-700 text-slate-300 px-2.5 py-1 rounded-full font-medium">
-                Завдань: 0
-            </span>
-        </div>
-
-        <!-- Форма додавання завдань -->
-        <form id="task-form" class="flex gap-2 mb-6">
-            <input 
-                type="text" 
-                id="task-input" 
-                placeholder="Що потрібно зробити?" 
-                required
-                class="flex-1 bg-slate-950 border border-slate-700 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-violet-500 transition-colors placeholder:text-slate-500"
-            >
-            <button 
-                type="submit" 
-                class="bg-violet-600 hover:bg-violet-500 text-white font-medium text-sm px-4 py-2.5 rounded-xl transition-colors flex items-center gap-1 cursor-pointer"
-            >
-                <i data-lucide="plus" class="w-4 h-4"></i>
-            </button>
-        </form>
-
-        <!-- Список завдань -->
-        <ul id="task-list" class="space-y-2 max-h-[350px] overflow-y-auto pr-1">
-            <!-- Сюди JS додаватиме завдання -->
-        </ul>
-
-        <!-- Порожній стан (якщо завдань немає) -->
-        <div id="empty-state" class="text-center py-8 text-slate-500">
-            <i data-lucide="clipboard-list" class="w-12 h-12 mx-auto mb-2 opacity-50"></i>
-            <p class="text-sm">Список порожній. Час відпочити!</p>
-        </div>
-    </div>
-
-    <!-- Логіка на JavaScript -->
-    <script>
-        const taskForm = document.getElementById('task-form');
-        const taskInput = document.getElementById('task-input');
-        const taskList = document.getElementById('task-list');
-        const emptyState = document.getElementById('empty-state');
-        const taskCounter = document.getElementById('task-counter');
-
-        let tasks = [];
-
-        // Оновлення інтерфейсу
-        function updateUI() {
-            taskList.innerHTML = '';
-            
-            if (tasks.length === 0) {
-                emptyState.classList.remove('hidden');
-            } else {
-                emptyState.classList.add('hidden');
-            }
-
-            taskCounter.innerText = `Завдань: ${tasks.length}`;
-
-            tasks.forEach((task, index) => {
-                const li = document.createElement('li');
-                li.className = `flex items-center justify-between p-3.5 bg-slate-950/50 border rounded-xl transition-all ${
-                    task.completed ? 'border-slate-800/80 opacity-60' : 'border-slate-700 hover:border-slate-600'
-                }`;
-
-                li.innerHTML = `
-                    <div class="flex items-center gap-3 flex-1 min-w-0">
-                        <input 
-                            type="checkbox" 
-                            ${task.completed ? 'checked' : ''} 
-                            onclick="toggleTask(${index})"
-                            class="w-4 h-4 rounded border-slate-700 bg-slate-900 text-violet-600 focus:ring-violet-500 cursor-pointer"
-                        >
-                        <span class="text-sm truncate ${task.completed ? 'line-through text-slate-500' : 'text-slate-200'}">
-                            ${task.text}
-                        </span>
-                    </div>
-                    <button 
-                        onclick="deleteTask(${index})" 
-                        class="text-slate-500 hover:text-red-400 p-1 rounded-lg hover:bg-slate-800 transition-colors cursor-pointer"
-                    >
-                        <i data-lucide="trash-2" class="w-4 h-4"></i>
-                    </button>
-                `;
-                taskList.appendChild(li);
-            });
-
-            // Переініціалізація іконок після оновлення DOM
-            lucide.createIcons();
-        }
-
-        // Додавання завдання
-        taskForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-            const text = taskInput.value.trim();
-            if (text) {
-                tasks.push({ text, completed: false });
-                taskInput.value = '';
-                updateUI();
-            }
-        });
-
-        // Перемикання стану (виконано / не виконано)
-        window.toggleTask = function(index) {
-            tasks[index].completed = !tasks[index].completed;
-            updateUI();
-        }
-
-        // Видалення завдання
-        window.deleteTask = function(index) {
-            tasks.splice(index, 1);
-            updateUI();
-        }
-
-        // Перший запуск для ініціалізації іконок
-        lucide.createIcons();
-    </script>
+    <hr style="border: 1px solid black"></hr>
+    <a href="{% url 'task_detail' t.pk %}">
+    <p>|{{t.creator}}|</p>
+    <p>{{t.title}}</p>
+    <p>{{t.description}}</p>
+    <p>{{t.priority}}</p>
+    </a>
+    <hr style="border:1px solid black"></hr>
+{% empty %}
+    <p>Немає доступних Завдань</p>
+{% endfor %}
+<line></line>
 </body>
-</html>

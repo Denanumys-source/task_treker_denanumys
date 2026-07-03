@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<head>
+    <title>Task - {{tasks.title}}</title>
+</head>
+<h1>EDIT TASK</h1>
+<h1><a href="{% url 'task_list' %}">back</a></h1>
+<body>
+<b><p>User:{{tasks.creator}}</p></b>
+<h1>Title:{{tasks.title}}</h1>
+<p>Description:{{tasks.description}}</p>
+<hr style="border: 1px solid black"></hr>
+<p>Pole:{{tasks.pole}}</p>
+<p>{{tasks.created_at}} </p>
+<hr style="border: 1px solid black">
+<p>Status:{{tasks.status}}</p>
+<p>Priority:{{tasks.priority}}</p>
+</body>
