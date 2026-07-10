@@ -1,18 +1,203 @@
+
 <!DOCTYPE html>
+<html lang="uk">
 
 <head>
-    <title>Task - {{tasks.title}}</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ tasks.title }} | Task Tracker</title>
+
+    <style>
+
+        *{
+            margin:0;
+            padding:0;
+            box-sizing:border-box;
+            font-family:Arial, Helvetica, sans-serif;
+        }
+
+        body{
+            background:#f4f6f9;
+        }
+
+        header{
+            background:#2563eb;
+            color:white;
+            padding:20px 40px;
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+            box-shadow:0 3px 10px rgba(0,0,0,.15);
+        }
+
+        .logo{
+            font-size:32px;
+            font-weight:bold;
+        }
+
+        .buttons{
+            display:flex;
+            gap:15px;
+        }
+
+        .btn{
+            text-decoration:none;
+            padding:10px 18px;
+            border-radius:8px;
+            font-weight:bold;
+            transition:.25s;
+            color:white;
+        }
+
+        .back{
+            background:#2563eb;
+        }
+
+        .back:hover{
+            background:#1d4ed8;
+        }
+
+        .edit{
+            background:#22c55e;
+        }
+
+        .edit:hover{
+            background:#16a34a;
+        }
+
+        .delete{
+            background:#ef4444;
+        }
+
+        .delete:hover{
+            background:#dc2626;
+        }
+
+        .container{
+            max-width:900px;
+            margin:40px auto;
+            padding:0 20px;
+        }
+
+        .card{
+            background:white;
+            border-radius:15px;
+            padding:35px;
+            box-shadow:0 10px 25px rgba(0,0,0,.08);
+        }
+
+        h1{
+            color:#2563eb;
+            margin-bottom:20px;
+        }
+
+        .info{
+            margin:18px 0;
+            font-size:18px;
+        }
+
+        .label{
+            font-weight:bold;
+            color:#374151;
+        }
+
+        hr{
+            border:none;
+            border-top:1px solid #ddd;
+            margin:25px 0;
+        }
+
+        .badge{
+            display:inline-block;
+            padding:8px 15px;
+            border-radius:20px;
+            background:#dbeafe;
+            color:#1d4ed8;
+            font-weight:bold;
+        }
+
+        .date{
+            color:#6b7280;
+        }
+
+    </style>
+
 </head>
-<a href="{% url 'tasks:task_list' %}"><h1>back</h1></a>
-<a href="{% url 'tasks:task_delete' tasks.pk %}"><h1>Delete Task</h1></a>
+
 <body>
-<b><p>User:{{tasks.creator}}</p></b>
-<h1>Title:{{tasks.title}}</h1>
-<p>Description:{{tasks.description}}</p>
-<hr style="border: 1px solid black"></hr>
-<p>Pole:{{tasks.pole}}</p>
-<p>{{tasks.created_at}} </p>
-<hr style="border: 1px solid black">
-<p>Status:{{tasks.status}}</p>
-<p>Priority:{{tasks.priority}}</p>
+
+<header>
+
+    <div class="logo">
+        📋 Task Tracker
+    </div>
+
+    <div class="buttons">
+
+        <a class="btn back" href="{% url 'tasks:task_list' %}">
+            ← Back
+        </a>
+
+        <a class="btn edit" href="{% url 'tasks:task_update' tasks.pk %}">
+            ✏ Update
+        </a>
+
+        <a class="btn delete" href="{% url 'tasks:task_delete' tasks.pk %}">
+            🗑 Delete
+        </a>
+
+    </div>
+
+</header>
+
+<div class="container">
+
+    <div class="card">
+
+        <h1>{{ tasks.title }}</h1>
+
+        <div class="info">
+            <span class="label">👤 Creator:</span>
+            {{ tasks.creator }}
+        </div>
+
+        <div class="info">
+            <span class="label">📝 Description:</span><br><br>
+            {{ tasks.description }}
+        </div>
+
+        <hr>
+
+        <div class="info">
+            <span class="label">📂 Pole:</span>
+            {{ tasks.pole }}
+        </div>
+
+        <div class="info date">
+            <span class="label">📅 Created:</span>
+            {{ tasks.created_at }}
+        </div>
+
+        <hr>
+
+        <div class="info">
+            <span class="label">✅ Status:</span>
+            <span class="badge">
+                {{ tasks.get_status_display|default:tasks.status }}
+            </span>
+        </div>
+
+        <div class="info">
+            <span class="label">⚡ Priority:</span>
+            <span class="badge">
+                {{ tasks.get_priority_display|default:tasks.priority }}
+            </span>
+        </div>
+
+    </div>
+
+</div>
+
 </body>
+</html>
+```

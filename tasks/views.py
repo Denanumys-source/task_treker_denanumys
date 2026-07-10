@@ -55,20 +55,37 @@ class TaskCreateView(LoginRequiredMixin, CreateView):
 class TaskUpdateView(LoginRequiredMixin, UserIsOwnerMixin, UpdateView):
     model = Task
     form_class = TaskForm
-    template_name = "tasks/task_form.html"
+    template_name = "tasks/task_update.html"
     success_url = reverse_lazy("tasks:task_list")
+    context_object_name = "tasks"
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["web_title"] = f'Update Task: {self.object.title}'
+        return context
 
 
 class TaskDeleteView(DeleteView):
     model = Task
     success_url = reverse_lazy("tasks:task_list")
-    template_name = "tasks/task_confirm_delete.html"
-    context_object_name = "task"
+    template_name = "tasks/task_delete.html"
+    context_object_name = "tasks"
 
 
 
+class CommentCreateView(LoginRequiredMixin, CreateView):
+    model = Task
+    form_class = TaskForm
+    template_name = "tasks/comment_create.html"
 
-    
+class CommentUpdateView(LoginRequiredMixin, UserIsOwnerMixin, UpdateView):
+    model = Comment
+    form_class = CommentForm
+    template_name = "tasks/comment_form.html"
+    success_url = reverse_lazy("tasks:comment_list")
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        return context
+
 
 class CommentEditView(LoginRequiredMixin, UpdateView):
     model = Comment

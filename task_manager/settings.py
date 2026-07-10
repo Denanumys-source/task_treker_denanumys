@@ -118,7 +118,11 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media'
+
 LOGIN_REDIRECT_URL = 'tasks:task_list'
 LOGOUT_REDIRECT_URL = "auth_system:logout"
 LOGIN_URL = 'auth_system:login'
 
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'

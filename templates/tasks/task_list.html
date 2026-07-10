@@ -1,42 +1,238 @@
 <!DOCTYPE html>
+<html lang="uk">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Task Tracker</title>
+
+    <style>
+        *{
+            margin:0;
+            padding:0;
+            box-sizing:border-box;
+            font-family:Arial, Helvetica, sans-serif;
+        }
+
+        body{
+            background:#f4f6f9;
+        }
+
+        header{
+            background:#2563eb;
+            color:white;
+            padding:20px 40px;
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+            box-shadow:0 3px 10px rgba(0,0,0,.15);
+        }
+
+        .logo{
+            font-size:32px;
+            font-weight:bold;
+        }
+
+        .nav{
+            display:flex;
+            gap:15px;
+            align-items:center;
+        }
+
+        .btn{
+            text-decoration:none;
+            background:white;
+            color:#2563eb;
+            padding:10px 18px;
+            border-radius:8px;
+            font-weight:bold;
+            transition:.25s;
+            border:none;
+            cursor:pointer;
+        }
+
+        .btn:hover{
+            transform:translateY(-2px);
+            background:#e5e7eb;
+        }
+
+        .logout{
+            background:#ef4444;
+            color:white;
+        }
+
+        .logout:hover{
+            background:#dc2626;
+        }
+
+        .container{
+            width:90%;
+            max-width:1100px;
+            margin:40px auto;
+        }
+
+        .create{
+            display:inline-block;
+            text-decoration:none;
+            background:#22c55e;
+            color:white;
+            padding:12px 20px;
+            border-radius:10px;
+            margin-bottom:25px;
+            font-weight:bold;
+            transition:.2s;
+        }
+
+        .create:hover{
+            background:#16a34a;
+        }
+
+        .grid{
+            display:grid;
+            grid-template-columns:repeat(auto-fill,minmax(320px,1fr));
+            gap:20px;
+        }
+
+        .card{
+            background:white;
+            border-radius:15px;
+            padding:20px;
+            box-shadow:0 10px 25px rgba(0,0,0,.08);
+            transition:.25s;
+        }
+
+        .card:hover{
+            transform:translateY(-5px);
+            box-shadow:0 15px 35px rgba(0,0,0,.15);
+        }
+
+        .card a{
+            text-decoration:none;
+            color:#111827;
+        }
+
+        .title{
+            font-size:24px;
+            margin-bottom:15px;
+            color:#2563eb;
+        }
+
+        .creator{
+            color:#6b7280;
+            margin-bottom:10px;
+        }
+
+        .description{
+            margin-bottom:20px;
+            line-height:1.5;
+        }
+
+        .priority{
+            display:inline-block;
+            padding:8px 14px;
+            border-radius:20px;
+            background:#dbeafe;
+            color:#1d4ed8;
+            font-weight:bold;
+        }
+
+        .empty{
+            text-align:center;
+            font-size:22px;
+            margin-top:50px;
+            color:#6b7280;
+        }
+
+    </style>
 </head>
+
 <body>
-<h1>Task Tracker</h1>
+
 {% if messages %}
     {% for message in messages %}
         <script>
-            alert("{{ message }}");
+            alert("{{ message|escapejs }}");
         </script>
     {% endfor %}
 {% endif %}
-{% if user.is_authenticated %}
 
-    <p>Welcome, {{ user.username }}!</p>
-    <form action="{% url 'auth_system:logout' %}" method="post">
-    {% csrf_token %}
-    <button type="submit">Log Out</button>
-    </form>
+<header>
 
-{% else %}
-    <a href="{% url 'auth_system:register' %}">Register</a>
-    <a href="{% url 'auth_system:login' %}">Login</a>
-{% endif %}
+    <div class="logo">
+        📋 Task Tracker
+    </div>
 
-<h3><a href="{% url 'tasks:task_create' %}">Create Task</a></h3>
-{% for t in tasks%}
+    <div class="nav">
 
-    <hr style="border: 1px solid black"></hr>
-    <a href="{% url 'tasks:task_detail' t.pk %}">
-    <p>|{{t.creator}}|</p>
-    <p>{{t.title}}</p>
-    <p>{{t.description}}</p>
-    <p>{{t.priority}}</p>
+        {% if user.is_authenticated %}
+
+            <span>👋 {{ user.username }}</span>
+
+            <form action="{% url 'auth_system:logout' %}" method="post">
+                {% csrf_token %}
+                <button class="btn logout">Log Out</button>
+            </form>
+
+        {% else %}
+
+            <a class="btn" href="{% url 'auth_system:register' %}">
+                Register
+            </a>
+
+            <a class="btn" href="{% url 'auth_system:login' %}">
+                Login
+            </a>
+
+        {% endif %}
+
+    </div>
+
+</header>
+
+<div class="container">
+
+    <a class="create" href="{% url 'tasks:task_create' %}">
+        + Create Task
     </a>
-    <hr style="border:1px solid black"></hr>
-{% empty %}
-    <p>Немає доступних Завдань</p>
-{% endfor %}
-<line></line>
+
+    <div class="grid">
+
+        {% for t in tasks %}
+
+            <div class="card">
+
+                <a href="{% url 'tasks:task_detail' t.pk %}">
+
+                    <div class="title">
+                        {{ t.title }}
+                    </div>
+
+                    <div class="creator">
+                        👤 {{ t.creator }}
+                    </div>
+
+                    <div class="description">
+                        {{ t.description }}
+                    </div>
+
+                    <div class="priority">
+                        ⚡ {{ t.get_priority_display|default:t.priority }}
+                    </div>
+
+                </a>
+
+            </div>
+
+        {% empty %}
+
+            <div class="empty">
+                📭 Наразі немає жодного завдання.
+            </div>
+
+        {% endfor %}
+
+    </div>
+
+</div>
+
 </body>
+</html>
