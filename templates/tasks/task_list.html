@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<head>
+    <title>Task Tracker</title>
+</head>
+<body>
+<h1>Task Tracker</h1>
+{% if messages %}
+    {% for message in messages %}
+        <script>
+            alert("{{ message }}");
+        </script>
+    {% endfor %}
+{% endif %}
+{% if user.is_authenticated %}
+
+    <p>Welcome, {{ user.username }}!</p>
+    <form action="{% url 'auth_system:logout' %}" method="post">
+    {% csrf_token %}
+    <button type="submit">Log Out</button>
+    </form>
+
+{% else %}
+    <a href="{% url 'auth_system:register' %}">Register</a>
+    <a href="{% url 'auth_system:login' %}">Login</a>
+{% endif %}
+
+<h3><a href="{% url 'tasks:task_create' %}">Create Task</a></h3>
+{% for t in tasks%}
+
+    <hr style="border: 1px solid black"></hr>
+    <a href="{% url 'tasks:task_detail' t.pk %}">
+    <p>|{{t.creator}}|</p>
+    <p>{{t.title}}</p>
+    <p>{{t.description}}</p>
+    <p>{{t.priority}}</p>
+    </a>
+    <hr style="border:1px solid black"></hr>
+{% empty %}
+    <p>Немає доступних Завдань</p>
+{% endfor %}
+<line></line>
+</body>

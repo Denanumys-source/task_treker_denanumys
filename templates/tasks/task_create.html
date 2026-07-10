@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<head>
+    <title>Create Task</title>
+</head>
+<body>
+<h1>Task Tracker</h1>
+<a href="{% url 'tasks:task_list' %}"><h1>back</h1></a>
+{% block content %}
+<div>
+<form method="post">
+    {% csrf_token %}
+    {{form}}
+    <button type="submit">Create Task</button>
+</form>
+</div>
+{% endblock %}
+</body>

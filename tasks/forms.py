@@ -8,6 +8,10 @@ class TaskForm(forms.ModelForm):
         model = Task
         fields = ["title", "description", "status", "priority", "due_date", "file"]
         widgets = {
+            "title": forms.TextInput(attrs={'class': 'form-control'}),
+            'description': forms.Textarea(attrs={'class': 'form-control', 'rows': 4}),
+            "status": forms.Select(attrs={'class': 'form-control'}),
+            "priority": forms.Select(attrs={'class': 'form-control'}),
             "due_date": forms.DateInput(
                 attrs={"type": "date", "class": "form-control"}
             ),

@@ -1,9 +1,10 @@
 <!DOCTYPE html>
+
 <head>
     <title>Task - {{tasks.title}}</title>
 </head>
-<h1>EDIT TASK</h1>
-<h1><a href="{% url 'task_list' %}">back</a></h1>
+<a href="{% url 'tasks:task_list' %}"><h1>back</h1></a>
+<a href="{% url 'tasks:task_delete' tasks.pk %}"><h1>Delete Task</h1></a>
 <body>
 <b><p>User:{{tasks.creator}}</p></b>
 <h1>Title:{{tasks.title}}</h1>

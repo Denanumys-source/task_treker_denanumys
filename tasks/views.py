@@ -8,7 +8,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import login
 
 from .forms import TaskForm, CommentForm
-from .mixins import PermissionDenied, UserIsOwnerMixin
+from .mixins import PermissionDenied, UserIsOwnerMixin,HiMessageMixin
 from .models import Task, Comment
 
 
@@ -21,7 +21,7 @@ class TaskListView(ListView):
 class TaskDetailView(DetailView):
     model = Task
     template_name = "tasks/task_detail.html"
-    context_object_name = "task"
+    context_object_name = "tasks"
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -43,8 +43,9 @@ class TaskDetailView(DetailView):
 class TaskCreateView(LoginRequiredMixin, CreateView):
     model = Task
     form_class = TaskForm
-    template_name = "tasks/task_form.html"
+    template_name = "tasks/task_create.html"
     success_url = reverse_lazy("tasks:task_list")
+
 
     def form_valid(self, form):
         form.instance.creator = self.request.user
@@ -58,21 +59,15 @@ class TaskUpdateView(LoginRequiredMixin, UserIsOwnerMixin, UpdateView):
     success_url = reverse_lazy("tasks:task_list")
 
 
-class TaskDeleteView(LoginRequiredMixin, UserIsOwnerMixin, DeleteView):
+class TaskDeleteView(DeleteView):
     model = Task
+    success_url = reverse_lazy("tasks:task_list")
     template_name = "tasks/task_confirm_delete.html"
-    success_url = reverse_lazy("tasks:task_list")
+    context_object_name = "task"
 
 
-class RegisterView(CreateView):
-    template_name = "registration/register.html"
-    form_class = UserCreationForm
-    success_url = reverse_lazy("tasks:task_list")
 
-    def form_valid(self, form):
-        response = super().form_valid(form)
-        login(self.request, self.object)
-        return response
+
     
 
 class CommentEditView(LoginRequiredMixin, UpdateView):

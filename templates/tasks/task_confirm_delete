@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Подтверждение удаления</title>
+</head>
+<body>
+    <h2>Удаление задачи</h2>
+    
+    <form method="post">
+        {% csrf_token %}
+        <p>Вы уверены, что хотите безвозвратно удалить задачу "{{ object.title }}"?</p>
+        
+        <button type="submit" style="background-color: red; color: white;">Да, удалить</button>
+        <a href="javascript:history.back()">Отмена</a>
+    </form>
+</body>
+</html>

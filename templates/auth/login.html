@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<head>
+    <title>Login</title>
+</head>
+<body>
+{% if messages %}
+{% for message in messages %}
+    <script>
+        alert("{{ message }}");
+    </script>
+{% endfor %}
+
+{% endif %}
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Login</button>
+</form>
+</body>
