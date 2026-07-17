@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Comments | Task Tracker</title>
+
+    <style>
+
+        *{
+            margin:0;
+            padding:0;
+            box-sizing:border-box;
+            font-family:Arial, Helvetica, sans-serif;
+        }
+
+        body{
+            background:#f4f6f9;
+        }
+
+        header{
+            background:#2563eb;
+            color:white;
+            padding:20px 40px;
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+            box-shadow:0 3px 10px rgba(0,0,0,.15);
+        }
+
+        .logo{
+            font-size:32px;
+            font-weight:bold;
+        }
+
+        .btn{
+            text-decoration:none;
+            background:white;
+            color:#2563eb;
+            padding:10px 18px;
+            border-radius:8px;
+            font-weight:bold;
+            transition:.25s;
+        }
+
+        .btn:hover{
+            background:#e5e7eb;
+        }
+
+        .container{
+            width:90%;
+            max-width:900px;
+            margin:40px auto;
+        }
+
+        .create{
+            display:inline-block;
+            margin-bottom:20px;
+            background:#22c55e;
+            color:white;
+            text-decoration:none;
+            padding:12px 18px;
+            border-radius:8px;
+            font-weight:bold;
+        }
+
+        .create:hover{
+            background:#16a34a;
+        }
+
+        .card{
+            background:white;
+            padding:25px;
+            border-radius:15px;
+            margin-bottom:20px;
+            box-shadow:0 8px 20px rgba(0,0,0,.08);
+        }
+
+        .author{
+            color:#2563eb;
+            font-size:18px;
+            font-weight:bold;
+            margin-bottom:10px;
+        }
+
+        .date{
+            color:#6b7280;
+            font-size:14px;
+            margin-bottom:15px;
+        }
+
+        .text{
+            font-size:17px;
+            line-height:1.6;
+            margin-bottom:20px;
+        }
+
+        .actions{
+            display:flex;
+            gap:10px;
+        }
+
+        .edit{
+            background:#22c55e;
+            color:white;
+            padding:8px 14px;
+            border-radius:8px;
+            text-decoration:none;
+        }
+
+        .delete{
+            background:#ef4444;
+            color:white;
+            padding:8px 14px;
+            border-radius:8px;
+            text-decoration:none;
+        }
+
+        .edit:hover{
+            background:#16a34a;
+        }
+
+        .delete:hover{
+            background:#dc2626;
+        }
+
+        .empty{
+            text-align:center;
+            font-size:20px;
+            color:#6b7280;
+            margin-top:40px;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<header>
+
+    <div class="logo">
+        💬 Comments
+    </div>
+
+    <a class="btn" href="{% url 'tasks:task_detail' task.pk %}">
+        ← Back to Task
+    </a>
+
+</header>
+
+<div class="container">
+
+    <a class="create">
+        ➕ Add Comment
+    </a>
+    <form method="post">
+        {% csrf_token %}
+        <p>{{ request.user.username }}</p>
+        {{ form.as_p }}
+        <button type="submit">Submit</button>
+    </form>
+
+    {% for comment in com %}
+
+    <div class="card">
+        
+
+        <div class="author">
+            👤 {{ comment.creator }}
+        </div>
+
+        <div class="date">
+            📅 {{ comment.created_at }}
+        </div>
+
+        <div class="text">
+            {{ comment.text }}
+        </div>
+
+        <div class="actions">
+
+            <a class="edit" >
+                ✏ Edit
+            </a>
+
+            <a class="delete" >
+                🗑 Delete
+            </a>
+
+        </div>
+
+    </div>
+
+    {% empty %}
+
+        <div class="empty">
+            💬 Коментарів поки що немає.
+        </div>
+
+    {% endfor %}
+
+</div>
+
+</body>
+</html>
+

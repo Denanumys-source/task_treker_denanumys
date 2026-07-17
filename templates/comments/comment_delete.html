@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Delete Task | Task Tracker</title>
+
+    <style>
+
+        *{
+            margin:0;
+            padding:0;
+            box-sizing:border-box;
+            font-family:Arial, Helvetica, sans-serif;
+        }
+
+        body{
+            background:#f4f6f9;
+            display:flex;
+            justify-content:center;
+            align-items:center;
+            min-height:100vh;
+        }
+
+        .card{
+            width:500px;
+            background:white;
+            padding:40px;
+            border-radius:15px;
+            box-shadow:0 10px 25px rgba(0,0,0,.1);
+            text-align:center;
+        }
+
+        h1{
+            color:#ef4444;
+            margin-bottom:20px;
+        }
+
+        p{
+            font-size:18px;
+            margin-bottom:30px;
+            color:#374151;
+            line-height:1.5;
+        }
+
+        .buttons{
+            display:flex;
+            justify-content:center;
+            gap:15px;
+        }
+
+        .btn{
+            text-decoration:none;
+            padding:12px 20px;
+            border:none;
+            border-radius:8px;
+            font-size:16px;
+            font-weight:bold;
+            cursor:pointer;
+            transition:.25s;
+        }
+
+        .delete{
+            background:#ef4444;
+            color:white;
+        }
+
+        .delete:hover{
+            background:#dc2626;
+        }
+
+        .cancel{
+            background:#2563eb;
+            color:white;
+        }
+
+        .cancel:hover{
+            background:#1d4ed8;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<div class="card">
+
+    <h1>🗑 Delete Comment</h1>
+
+    <p>
+        Are you sure you want to permanently delete
+        <strong>{{com.title}}</strong>?
+    </p>
+
+    <form method="post">
+        {% csrf_token %}
+
+        <div class="buttons">
+            <button class="btn delete" type="submit">
+                Yes, Delete
+            </button>
+
+            <a class="btn cancel" href="{% url 'tasks:comment_list' task.pk %}">
+                Cancel
+            </a>
+        </div>
+
+    </form>
+
+</div>
+
+</body>
+</html>
+```
