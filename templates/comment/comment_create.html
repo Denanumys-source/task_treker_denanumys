@@ -151,16 +151,23 @@
 
 <div class="container">
 
-    <a class="create" href="{% url 'tasks:comment_create' task.pk %}">
+    <a class="create">
         ➕ Add Comment
     </a>
+    <form method="post">
+        {% csrf_token %}
+        <p>{{ request.user.username }}</p>
+        {{ form.as_p }}
+        <button type="submit">Submit</button>
+    </form>
 
     {% for comment in com %}
 
     <div class="card">
+        
 
         <div class="author">
-            👤 {{ comment.author }}
+            👤 {{ comment.creator }}
         </div>
 
         <div class="date">
@@ -168,7 +175,7 @@
         </div>
 
         <div class="text">
-            {{ comment.content }}
+            {{ comment.text }}
         </div>
 
         <div class="actions">
@@ -177,9 +184,10 @@
                 ✏ Edit
             </a>
 
-            <a class="delete" href="{% url 'tasks:comment_delete' task.pk comment.pk %}">
+            <a class="delete" >
                 🗑 Delete
             </a>
+
         </div>
 
     </div>
@@ -196,3 +204,4 @@
 
 </body>
 </html>
+

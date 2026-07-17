@@ -1,5 +1,5 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.shortcuts import redirect
+from django.shortcuts import redirect,get_object_or_404
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, DetailView, ListView
 from django.views.generic.edit import DeleteView, UpdateView
@@ -71,17 +71,40 @@ class TaskDeleteView(DeleteView):
     context_object_name = "tasks"
 
 
+class CommentListView(ListView):
+    model = Comment
+    template_name = "comment/comment_list.html"
+    context_object_name = "com"
+    pk_url_kwarg = 'com_pk'
 
+    def get_queryset(self):
+        return Comment.objects.filter(task_id=self.kwargs["pk"])
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["task"] = get_object_or_404(Task, pk=self.kwargs["pk"])
+        return context
+    
 class CommentCreateView(LoginRequiredMixin, CreateView):
-    model = Task
-    form_class = TaskForm
-    template_name = "tasks/comment_create.html"
-
+    model = Comment
+    form_class = CommentForm
+    template_name = "comment/comment_create.html"
+    pk_url_kwarg = 'pk'
+    context_object_name = 'comment'
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["task"] = get_object_or_404(Task, pk=self.kwargs["pk"])
+        return context
+    def form_valid(self, form):
+        form.instance.author = self.request.user
+        form.instance.comment = self.comment
+        return super().form_valid(form)
 class CommentUpdateView(LoginRequiredMixin, UserIsOwnerMixin, UpdateView):
     model = Comment
     form_class = CommentForm
     template_name = "tasks/comment_form.html"
     success_url = reverse_lazy("tasks:comment_list")
+    context_object_name = 'comment'
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         return context
@@ -102,7 +125,9 @@ class CommentEditView(LoginRequiredMixin, UpdateView):
 
 class CommentDeleteView(LoginRequiredMixin, DeleteView):
     model = Comment
-    template_name = "tasks/comment_confirm_delete.html"
+    template_name = "comment/comment_delete.html"
+    context_object_name = 'comment'
+    pk_url_kwarg = 'com_pk'
 
     def get_success_url(self):
         return reverse_lazy("tasks:task_detail", kwargs={"pk": self.object.task.pk})
@@ -111,3 +136,9 @@ class CommentDeleteView(LoginRequiredMixin, DeleteView):
         if self.get_object().author != request.user:
             raise PermissionDenied
         return super().dispatch(request, *args, **kwargs)
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["task"] = get_object_or_404(Task, pk=self.kwargs["pk"])
+        context["com"] = get_object_or_404(Comment, pk=self.kwargs["com_pk"])
+        return context
+
