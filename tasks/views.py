@@ -75,12 +75,6 @@ class TaskDeleteView(LoginRequiredMixin,UserIsOwnerMixin,DeleteView):
 
 class CommentListView(ListView):
     model = Comment
-    template_name = "comments/comment_list.html"
-    context_object_name = "com"
-    pk_url_kwarg = 'com_pk'
-
-class CommentListView(ListView):
-    model = Comment
     template_name = "comment/comment_list.html"
     context_object_name = "com"
     pk_url_kwarg = 'com_pk'
@@ -101,12 +95,15 @@ class CommentCreateView(LoginRequiredMixin, CreateView):
     context_object_name = 'comment'
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["tasks"] = get_object_or_404(Task, pk=self.kwargs["pk"])
+        context["task"] = get_object_or_404(Task, pk=self.kwargs["pk"])
         return context
     def form_valid(self, form):
         form.instance.author = self.request.user
-        form.instance.comment = CommentForm
+        form.instance.task = get_object_or_404(Task, pk=self.kwargs["pk"])
         return super().form_valid(form)
+
+    def get_success_url(self):
+        return reverse_lazy("tasks:comment_list", kwargs={"pk": self.kwargs["pk"]})
 class CommentUpdateView(LoginRequiredMixin, UserIsOwnerMixin, UpdateView):
     model = Comment
     form_class = CommentForm

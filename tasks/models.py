@@ -2,10 +2,8 @@ from django.db import models
 from django.contrib.auth.models import User
 
 # Create your models here.
-from audioop import reverse
-from django.db import models
+from django.urls import reverse
 from django.db.models import Q, F
-from django.contrib.auth.models import User
 
 
 class Task(models.Model):
@@ -35,7 +33,7 @@ class Task(models.Model):
         return self.title
 
     def get_absolute_url(self):
-        return reverse('tasks:task-detail', kwargs={'pk': self.pk})
+        return reverse('tasks:task_detail', kwargs={'pk': self.pk})
     
     class Meta:
         ordering = ['-status']

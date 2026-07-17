@@ -12,7 +12,7 @@ from .mixins import HiMessageMixin
 
 
 # Create your views here.
-class RegisterView(CreateView,HiMessageMixin):
+class RegisterView(HiMessageMixin,CreateView):
     template_name = "auth/register.html"
     form_class = RegisterForm
     success_url = reverse_lazy("tasks:task_list")
@@ -21,10 +21,10 @@ class RegisterView(CreateView,HiMessageMixin):
         response = super().form_valid(form)
         login(self.request, self.object)
         return response
-class LogoutView(LogoutView,HiMessageMixin):
+class LogoutView(HiMessageMixin,LogoutView):
     next_page = reverse_lazy("tasks:task_list")
     success_message = "You have been logged out."
-class LoginView(LoginView,HiMessageMixin):
+class LoginView(HiMessageMixin,LoginView):
     template_name = "auth/login.html"
     form_class = LoginForm
     success_url = reverse_lazy("tasks:task_list")
