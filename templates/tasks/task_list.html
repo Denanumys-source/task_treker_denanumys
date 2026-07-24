@@ -340,6 +340,20 @@
             font-size:12px;
             text-transform:uppercase;
             letter-spacing:.03em;
+
+        }
+        .status{
+            display:inline-flex;
+            align-items:center;
+            gap:6px;
+            padding:5px 12px;
+            border-radius:20px;
+            background:var(--p-med-soft);
+            color:var(--p-med);
+            font-weight:600;
+            font-size:12px;
+            text-transform:uppercase;
+            letter-spacing:.03em;
         }
 
         .priority::before{
@@ -516,7 +530,7 @@
                     </div>
 
                     <div class="priority">
-                        {{ t.get_priority_display|default:t.priority }}
+                        {{ t.get_status_display|default:t.priority }}
                     </div>
                 </a>
 
