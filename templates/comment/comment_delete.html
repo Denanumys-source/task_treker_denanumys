@@ -3,81 +3,143 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Delete Task | Task Tracker</title>
+    <title>Delete Comment | Task Tracker</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 
     <style>
+        :root{
+            --bg:            #FAFAF9;
+            --surface:       #FFFFFF;
+            --border:        #E7E5E2;
+            --ink:           #16181C;
+            --muted:         #8A8781;
+            --accent:        #3F3BEA;
+            --danger:        #C8503A;
+            --danger-soft:   #F7E9E5;
+
+            --radius:    10px;
+            --radius-lg: 16px;
+        }
 
         *{
             margin:0;
             padding:0;
             box-sizing:border-box;
-            font-family:Arial, Helvetica, sans-serif;
         }
 
         body{
-            background:#f4f6f9;
+            background:var(--bg);
+            color:var(--ink);
+            font-family:'Inter', Helvetica, Arial, sans-serif;
+            -webkit-font-smoothing:antialiased;
             display:flex;
             justify-content:center;
             align-items:center;
             min-height:100vh;
+            padding:24px;
         }
 
         .card{
-            width:500px;
-            background:white;
+            width:100%;
+            max-width:440px;
+            background:var(--surface);
+            border:1px solid var(--border);
             padding:40px;
-            border-radius:15px;
-            box-shadow:0 10px 25px rgba(0,0,0,.1);
+            border-radius:var(--radius-lg);
             text-align:center;
         }
 
+        .icon{
+            width:48px;
+            height:48px;
+            margin:0 auto 20px;
+            border-radius:50%;
+            background:var(--danger-soft);
+            color:var(--danger);
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            font-size:20px;
+        }
+
         h1{
-            color:#ef4444;
-            margin-bottom:20px;
+            font-family:'Sora', 'Inter', sans-serif;
+            font-size:20px;
+            font-weight:600;
+            letter-spacing:-0.01em;
+            color:var(--ink);
+            margin-bottom:12px;
         }
 
         p{
-            font-size:18px;
-            margin-bottom:30px;
-            color:#374151;
-            line-height:1.5;
+            font-size:14px;
+            margin-bottom:28px;
+            color:var(--muted);
+            line-height:1.6;
+        }
+
+        p strong{
+            color:var(--ink);
+            font-weight:600;
         }
 
         .buttons{
             display:flex;
             justify-content:center;
-            gap:15px;
+            gap:10px;
         }
 
         .btn{
+            flex:1;
             text-decoration:none;
-            padding:12px 20px;
-            border:none;
-            border-radius:8px;
-            font-size:16px;
-            font-weight:bold;
+            padding:11px 20px;
+            border:1px solid var(--border);
+            border-radius:var(--radius);
+            font-size:14px;
+            font-weight:600;
+            font-family:inherit;
             cursor:pointer;
-            transition:.25s;
+            transition:border-color .15s ease, background .15s ease, opacity .15s ease;
+            display:inline-flex;
+            align-items:center;
+            justify-content:center;
         }
 
         .delete{
-            background:#ef4444;
+            background:var(--danger);
             color:white;
+            border-color:var(--danger);
         }
 
         .delete:hover{
-            background:#dc2626;
+            opacity:.88;
         }
 
         .cancel{
-            background:#2563eb;
-            color:white;
+            background:transparent;
+            color:var(--ink);
         }
 
         .cancel:hover{
-            background:#1d4ed8;
+            border-color:var(--ink);
+            background:var(--bg);
         }
 
+        /* accessibility */
+        a:focus-visible,
+        button:focus-visible{
+            outline:2px solid var(--accent);
+            outline-offset:2px;
+        }
+
+        @media (prefers-reduced-motion: reduce){
+            *{
+                transition:none !important;
+            }
+        }
     </style>
 
 </head>
@@ -86,11 +148,13 @@
 
 <div class="card">
 
-    <h1>🗑 Delete Comment</h1>
+    <div class="icon">!</div>
+
+    <h1>Видалити коментар</h1>
 
     <p>
-        Are you sure you want to permanently delete
-        <strong>{{com.title}}</strong>?
+        Ви впевнені, що хочете безповоротно видалити
+        коментар <strong>{{ com.title }}</strong>?
     </p>
 
     <form method="post">
@@ -98,11 +162,11 @@
 
         <div class="buttons">
             <button class="btn delete" type="submit">
-                Yes, Delete
+                Так, видалити
             </button>
 
             <a class="btn cancel" href="{% url 'tasks:comment_list' tasks.pk %}">
-                Cancel
+                Скасувати
             </a>
         </div>
 
@@ -112,4 +176,3 @@
 
 </body>
 </html>
-```

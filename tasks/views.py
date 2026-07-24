@@ -75,7 +75,7 @@ class TaskCreateView(LoginRequiredMixin, CreateView):
         return super().form_valid(form)
 
 
-class TaskUpdateView(LoginRequiredMixin,UserIsOwnerMixin,HiMessageMixin,UpdateView):
+class TaskUpdateView(LoginRequiredMixin,UserIsOwnerMixin,UpdateView):
     model = Task
     form_class = TaskForm
     text_mixin = 'hamam'
@@ -87,7 +87,7 @@ class TaskUpdateView(LoginRequiredMixin,UserIsOwnerMixin,HiMessageMixin,UpdateVi
         context["web_title"] = f'Update Task: {self.object.title}'
         return context
 
-class TaskDeleteView(HiMessageMixin,LoginRequiredMixin,UserIsOwnerMixin,DeleteView):
+class TaskDeleteView(LoginRequiredMixin,UserIsOwnerMixin,DeleteView):
     model = Task
     success_url = reverse_lazy("tasks:task_list")
     template_name = "tasks/task_delete.html"
@@ -162,7 +162,7 @@ class CommentDeleteView(LoginRequiredMixin,UserIsOwnerMixin, DeleteView):
         context["com"] = get_object_or_404(Comment, pk=self.kwargs["com_pk"])
         return context
     
-class CommentLike(HiMessageMixin,LoginRequiredMixin,View):
+class CommentLike(LoginRequiredMixin,View):
     text_mixin = 'уВІЙДІТЬ ЩОБ ПОСТАВИТИ ЛАЙК'
     def post(self, request, *args, **kwargs):
         comment = get_object_or_404(Comment, pk=kwargs["com_pk"])

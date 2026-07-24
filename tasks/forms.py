@@ -50,24 +50,7 @@ class TaskFilterForm(forms.Form):
         super().__init__(*args, **kwargs)
         for field in self.fields.values():
             field.widget.attrs.update({'class': 'form-control'})
-'''
-    priority = forms.ChoiceField(
-            choices=[('', 'Усі')] + Task.PRIORITY_CHOICES,
-            required=False,
-            label='Пріоритет'
-        )
 
-    due_date = forms.DateField(
-            required=False,
-            label='Дата виконання',
-            widget=forms.DateInput(attrs={'type': 'date'})
-        )
-    status = forms.ChoiceField(
-            choices=[('', 'Усі')] + Task.STATUS_CHOICES,
-            required=False,
-            label='Статус'
-        )
-'''
 
 class CommentForm(forms.ModelForm):
     class Meta:

@@ -18,7 +18,3 @@ class HiMessageMixin:
         text = self.text_mixin
         success(request,text)
         return super().dispatch(request,*args,**kwargs)
-    def handle_no_premision(self):
-        messages.error(self.request, self.text_mixin)
-        return super().handle_no_permission()
-        

@@ -5,168 +5,254 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Comments | Task Tracker</title>
 
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+
     <style>
+        :root{
+            --bg:            #FAFAF9;
+            --surface:       #FFFFFF;
+            --border:        #E7E5E2;
+            --ink:           #16181C;
+            --muted:         #8A8781;
+            --accent:        #3F3BEA;
+            --accent-soft:   #ECEBFD;
+            --danger:        #C8503A;
+            --danger-soft:   #F7E9E5;
+
+            --radius:    10px;
+            --radius-lg: 16px;
+        }
 
         *{
             margin:0;
             padding:0;
             box-sizing:border-box;
-            font-family:Arial, Helvetica, sans-serif;
         }
 
         body{
-            background:#f4f6f9;
-        }
-
-        header{
-            background:#2563eb;
-            color:white;
-            padding:20px 40px;
-            display:flex;
-            justify-content:space-between;
-            align-items:center;
-            box-shadow:0 3px 10px rgba(0,0,0,.15);
+            background:var(--bg);
+            color:var(--ink);
+            font-family:'Inter', Helvetica, Arial, sans-serif;
+            -webkit-font-smoothing:antialiased;
         }
 
         .logo{
-            font-size:32px;
-            font-weight:bold;
+            font-family:'Sora', 'Inter', sans-serif;
+        }
+
+        /* ---------- header ---------- */
+
+        header{
+            background:var(--surface);
+            border-bottom:1px solid var(--border);
+            padding:22px 48px;
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+            flex-wrap:wrap;
+            gap:14px;
+        }
+
+        .logo{
+            font-size:19px;
+            font-weight:600;
+            letter-spacing:-0.01em;
+            color:var(--ink);
+            display:flex;
+            align-items:center;
+            gap:10px;
+        }
+
+        .logo::before{
+            content:"";
+            display:inline-block;
+            width:9px;
+            height:9px;
+            border-radius:3px;
+            background:var(--accent);
         }
 
         .btn{
             text-decoration:none;
-            background:white;
-            color:#2563eb;
-            padding:10px 18px;
-            border-radius:8px;
-            font-weight:bold;
-            transition:.25s;
+            background:transparent;
+            color:var(--ink);
+            border:1px solid var(--border);
+            padding:9px 16px;
+            border-radius:var(--radius);
+            font-size:14px;
+            font-weight:500;
+            font-family:inherit;
+            cursor:pointer;
+            transition:border-color .15s ease, background .15s ease;
         }
 
         .btn:hover{
-            background:#e5e7eb;
+            border-color:var(--ink);
+            background:var(--bg);
         }
+
+        /* ---------- layout ---------- */
 
         .container{
             width:90%;
-            max-width:900px;
-            margin:40px auto;
+            max-width:760px;
+            margin:0 auto;
+            padding:48px 0 80px;
         }
 
         .create{
-            display:inline-block;
-            margin-bottom:20px;
-            background:#22c55e;
-            color:white;
+            display:inline-flex;
+            align-items:center;
+            gap:8px;
+            margin-bottom:28px;
+            background:var(--accent);
+            color:#fff;
             text-decoration:none;
-            padding:12px 18px;
-            border-radius:8px;
-            font-weight:bold;
+            padding:11px 20px;
+            border-radius:var(--radius);
+            font-weight:600;
+            font-size:14px;
+            transition:opacity .15s ease;
         }
 
         .create:hover{
-            background:#16a34a;
+            opacity:.88;
         }
 
+        /* ---------- comment card ---------- */
+
         .card{
-            background:white;
-            padding:25px;
-            border-radius:15px;
-            margin-bottom:20px;
-            box-shadow:0 8px 20px rgba(0,0,0,.08);
+            background:var(--surface);
+            border:1px solid var(--border);
+            border-radius:var(--radius-lg);
+            padding:24px 26px;
+            margin-bottom:16px;
         }
 
         .author{
-            color:#2563eb;
-            font-size:18px;
-            font-weight:bold;
-            margin-bottom:10px;
+            color:var(--ink);
+            font-size:15px;
+            font-weight:600;
+            margin-bottom:4px;
         }
 
         .date{
-            color:#6b7280;
-            font-size:14px;
-            margin-bottom:15px;
+            color:var(--muted);
+            font-size:13px;
+            margin-bottom:14px;
         }
 
         .text{
-            font-size:17px;
+            font-size:15px;
             line-height:1.6;
-            margin-bottom:20px;
+            color:var(--ink);
+            margin-bottom:18px;
+        }
+
+        .meta-row{
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+            gap:12px;
+            flex-wrap:wrap;
+            padding-top:14px;
+            border-top:1px solid var(--border);
+        }
+
+        .like-form{
+            display:inline-block;
+        }
+
+        .like-btn{
+            border:none;
+            background:none;
+            cursor:pointer;
+            font-size:14px;
+            color:var(--muted);
+            padding:6px 4px;
+            display:inline-flex;
+            align-items:center;
+            gap:6px;
+            font-family:inherit;
+            transition:color .15s ease;
+        }
+
+        .like-btn:hover{
+            color:var(--danger);
         }
 
         .actions{
             display:flex;
-            gap:10px;
+            gap:8px;
         }
 
-        .edit{
-            background:#22c55e;
-            color:white;
-            padding:8px 14px;
-            border-radius:8px;
+        .actions a{
             text-decoration:none;
+            padding:7px 14px;
+            border-radius:var(--radius);
+            font-size:13px;
+            font-weight:500;
+            border:1px solid var(--border);
+            color:var(--ink);
+            transition:border-color .15s ease, background .15s ease, color .15s ease;
         }
 
-        .delete{
-            background:#ef4444;
-            color:white;
-            padding:8px 14px;
-            border-radius:8px;
-            text-decoration:none;
+        .actions .edit:hover{
+            border-color:var(--ink);
+            background:var(--bg);
         }
 
-        .edit:hover{
-            background:#16a34a;
+        .actions .delete{
+            color:var(--danger);
+            border-color:var(--danger-soft);
         }
 
-        .delete:hover{
-            background:#dc2626;
+        .actions .delete:hover{
+            background:var(--danger-soft);
+            border-color:var(--danger);
         }
+
+        /* ---------- empty state ---------- */
 
         .empty{
             text-align:center;
-            font-size:20px;
-            color:#6b7280;
-            margin-top:40px;
+            padding:80px 20px;
+            color:var(--muted);
+            border:1px dashed var(--border);
+            border-radius:var(--radius-lg);
+            font-size:14px;
         }
 
-        .btn {
-            padding: 8px 16px;
-            border: 2px solid #28a745;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 14px;
-            transition: 0.3s;
+        /* ---------- responsive ---------- */
+
+        @media (max-width:640px){
+            header{
+                padding:18px 24px;
+            }
+            .container{
+                width:92%;
+                padding:32px 0 60px;
+            }
+            .meta-row{
+                flex-direction:column;
+                align-items:flex-start;
+            }
         }
 
-        .btn-sm {
-            padding: 5px 10px;
-            font-size: 13px;
+        /* accessibility */
+        a:focus-visible,
+        button:focus-visible{
+            outline:2px solid var(--accent);
+            outline-offset:2px;
         }
 
-        .btn-success {
-            background-color: #28a745;
-            color: white;
-            border-color: #28a745;
+        @media (prefers-reduced-motion: reduce){
+            *{
+                transition:none !important;
+            }
         }
-
-        .btn-success:hover {
-            background-color: #218838;
-            border-color: #218838;
-        }
-
-        .btn-outline-success {
-            background-color: transparent;
-            color: #28a745;
-            border-color: #28a745;
-        }
-
-        .btn-outline-success:hover {
-            background-color: #28a745;
-            color: white;
-        }
-
     </style>
 
 </head>
@@ -175,12 +261,10 @@
 
 <header>
 
-    <div class="logo">
-        💬 Comments
-    </div>
+    <div class="logo">Коментарі</div>
 
     <a class="btn" href="{% url 'tasks:task_detail' tasks.pk %}">
-        ← Back to Task
+        ← До завдання
     </a>
 
 </header>
@@ -188,7 +272,7 @@
 <div class="container">
 
     <a class="create" href="{% url 'tasks:comment_create' tasks.pk %}">
-        ➕ Add Comment
+        + Додати коментар
     </a>
 
     {% for comment in com %}
@@ -196,34 +280,38 @@
     <div class="card">
 
         <div class="author">
-            👤 {{ comment.author }}
+            {{ comment.author }}
         </div>
 
         <div class="date">
-            📅 {{ comment.created_at }}
+            {{ comment.created_at }}
         </div>
 
         <div class="text">
             {{ comment.content }}
         </div>
-        <form method="post" action="{% url 'tasks:comment_like' tasks.pk comment.pk %}" style="display:inline;">
-            {% csrf_token %}
-            <button type="submit" style="border:none; background:none; cursor:pointer; font-size:1em;">
-              {% if user in comment.liked_by.all %}❤️{{comment.liked_by.count}}{% else %}🤍{{comment.liked_by.count}}{% endif %}
-            </button>
-            {{ message|escapejs }}
-            
 
-        <div class="actions">
-            {% if request.user == comment.author%}
-                <a class="edit" href="{% url 'tasks:comment_update' tasks.pk comment.pk %}">
-                    ✏ Edit
-                </a>
+        <div class="meta-row">
 
-                <a class="delete" href="{% url 'tasks:comment_delete' tasks.pk comment.pk %}">
-                    🗑 Delete
-                </a>
-            {% endif %}
+            <form method="post" action="{% url 'tasks:comment_like' tasks.pk comment.pk %}" class="like-form">
+                {% csrf_token %}
+                <button type="submit" class="like-btn">
+                    {% if user in comment.liked_by.all %}❤ {{ comment.liked_by.count }}{% else %}♡ {{ comment.liked_by.count }}{% endif %}
+                </button>
+            </form>
+
+            <div class="actions">
+                {% if request.user == comment.author %}
+                    <a class="edit" href="{% url 'tasks:comment_update' tasks.pk comment.pk %}">
+                        Редагувати
+                    </a>
+
+                    <a class="delete" href="{% url 'tasks:comment_delete' tasks.pk comment.pk %}">
+                        Видалити
+                    </a>
+                {% endif %}
+            </div>
+
         </div>
 
     </div>
@@ -231,7 +319,7 @@
     {% empty %}
 
         <div class="empty">
-            💬 Коментарів поки що немає.
+            Коментарів поки що немає.
         </div>
 
     {% endfor %}

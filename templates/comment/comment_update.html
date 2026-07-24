@@ -3,136 +3,171 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Comments | Task Tracker</title>
+    <title>Редагування коментаря | Task Tracker</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 
     <style>
+        :root{
+            --bg:#FAFAF9;
+            --surface:#FFFFFF;
+            --border:#E7E5E2;
+            --ink:#16181C;
+            --muted:#8A8781;
+            --accent:#3F3BEA;
+            --radius:10px;
+            --radius-lg:16px;
+        }
 
         *{
             margin:0;
             padding:0;
             box-sizing:border-box;
-            font-family:Arial, Helvetica, sans-serif;
         }
 
         body{
-            background:#f4f6f9;
+            background:var(--bg);
+            color:var(--ink);
+            font-family:'Inter',sans-serif;
         }
 
         header{
-            background:#2563eb;
-            color:white;
-            padding:20px 40px;
+            background:var(--surface);
+            border-bottom:1px solid var(--border);
+            padding:22px 48px;
             display:flex;
             justify-content:space-between;
             align-items:center;
-            box-shadow:0 3px 10px rgba(0,0,0,.15);
+            flex-wrap:wrap;
+            gap:15px;
         }
 
         .logo{
-            font-size:32px;
-            font-weight:bold;
+            font-family:'Sora',sans-serif;
+            font-size:19px;
+            font-weight:600;
+            display:flex;
+            align-items:center;
+            gap:10px;
+        }
+
+        .logo::before{
+            content:"";
+            width:9px;
+            height:9px;
+            border-radius:3px;
+            background:var(--accent);
         }
 
         .btn{
             text-decoration:none;
+            color:var(--ink);
+            border:1px solid var(--border);
             background:white;
-            color:#2563eb;
-            padding:10px 18px;
-            border-radius:8px;
-            font-weight:bold;
-            transition:.25s;
+            padding:10px 16px;
+            border-radius:var(--radius);
+            transition:.2s;
+            font-size:14px;
+            cursor:pointer;
         }
 
         .btn:hover{
-            background:#e5e7eb;
+            background:var(--bg);
+            border-color:var(--ink);
         }
 
         .container{
             width:90%;
-            max-width:900px;
-            margin:40px auto;
-        }
-
-        .create{
-            display:inline-block;
-            margin-bottom:20px;
-            background:#22c55e;
-            color:white;
-            text-decoration:none;
-            padding:12px 18px;
-            border-radius:8px;
-            font-weight:bold;
-        }
-
-        .create:hover{
-            background:#16a34a;
+            max-width:760px;
+            margin:50px auto;
         }
 
         .card{
-            background:white;
-            padding:25px;
-            border-radius:15px;
-            margin-bottom:20px;
-            box-shadow:0 8px 20px rgba(0,0,0,.08);
+            background:var(--surface);
+            border:1px solid var(--border);
+            border-radius:var(--radius-lg);
+            padding:28px;
+        }
+
+        h2{
+            font-family:'Sora',sans-serif;
+            margin-bottom:25px;
+            font-size:24px;
         }
 
         .author{
-            color:#2563eb;
-            font-size:18px;
-            font-weight:bold;
-            margin-bottom:10px;
+            font-weight:600;
+            margin-bottom:5px;
         }
 
         .date{
-            color:#6b7280;
+            color:var(--muted);
             font-size:14px;
-            margin-bottom:15px;
+            margin-bottom:25px;
         }
 
-        .text{
-            font-size:17px;
-            line-height:1.6;
-            margin-bottom:20px;
+        form p{
+            margin-bottom:18px;
         }
 
-        .actions{
-            display:flex;
-            gap:10px;
+        label{
+            display:block;
+            margin-bottom:8px;
+            font-weight:600;
         }
 
-        .edit{
-            background:#22c55e;
+        input,
+        textarea,
+        select{
+            width:100%;
+            padding:12px;
+            border:1px solid var(--border);
+            border-radius:10px;
+            font-size:15px;
+            font-family:inherit;
+        }
+
+        textarea{
+            resize:vertical;
+            min-height:150px;
+        }
+
+        .submit{
+            margin-top:15px;
+            border:none;
+            background:var(--accent);
             color:white;
-            padding:8px 14px;
-            border-radius:8px;
-            text-decoration:none;
+            padding:12px 22px;
+            border-radius:10px;
+            cursor:pointer;
+            font-weight:600;
+            transition:.2s;
         }
 
-        .delete{
-            background:#ef4444;
-            color:white;
-            padding:8px 14px;
-            border-radius:8px;
-            text-decoration:none;
-        }
-
-        .edit:hover{
-            background:#16a34a;
-        }
-
-        .delete:hover{
-            background:#dc2626;
+        .submit:hover{
+            opacity:.9;
         }
 
         .empty{
             text-align:center;
-            font-size:20px;
-            color:#6b7280;
-            margin-top:40px;
+            padding:70px 20px;
+            border:1px dashed var(--border);
+            border-radius:16px;
+            color:var(--muted);
         }
 
-    </style>
+        @media(max-width:640px){
+            header{
+                padding:20px;
+            }
 
+            .container{
+                width:92%;
+            }
+        }
+    </style>
 </head>
 
 <body>
@@ -140,49 +175,52 @@
 <header>
 
     <div class="logo">
-        💬 Comments
+        Редагування коментаря
     </div>
 
     <a class="btn" href="{% url 'tasks:task_detail' tasks.pk %}">
-        ← Back to Task
+        ← До завдання
     </a>
 
 </header>
 
 <div class="container">
 
-    <a class="create" href="{% url 'tasks:comment_create' tasks.pk %}">
-        ➕ Add Comment
-    </a>
-
     {% if com %}
+
     <div class="card">
 
         <div class="author">
-            👤 {{ com.author }}
+            {{ com.author }}
         </div>
 
         <div class="date">
-            📅 {{ com.created_at }}
+            {{ com.created_at }}
         </div>
 
-        <div class="text">
-            <form method="post">
-                {% csrf_token %}
-                {{form.as_p}}
-                <button type="submit" class="btn">Save</button>
-            </form>
-        </div>
+        <h2>Редагувати коментар</h2>
+
+        <form method="post">
+
+            {% csrf_token %}
+
+            {{ form.as_p }}
+
+            <button class="submit" type="submit">
+                Зберегти зміни
+            </button>
+
+        </form>
 
     </div>
 
     {% else %}
 
-        <div class="empty">
-            💬 Коментарів поки що немає.
-        </div>
-    {% endif %}
+    <div class="empty">
+        Коментар не знайдено.
+    </div>
 
+    {% endif %}
 
 </div>
 
