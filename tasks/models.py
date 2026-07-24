@@ -47,12 +47,15 @@ class Comment(models.Model):
     )
     content = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
-    likes = models.ManyToManyField(User,related_name='comment_like',blank=True)
+    liked_by = models.ManyToManyField(User,related_name="liked_comments",blank=True)
+    file = models.FileField(upload_to="media/comments",blank=True,null=True)
+    
 
     def __str__(self):
         return f"{self.author.username} — {self.content[:30]}"
     def get_redirect_url(self,*args,**kwargs):
         return reverse('tasks:comment_list')
-    
+    def total_likes(self):
+        return self.liked_by.count()
 
 

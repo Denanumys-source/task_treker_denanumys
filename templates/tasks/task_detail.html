@@ -137,14 +137,15 @@
         <a class="btn back" href="{% url 'tasks:task_list' %}">
             ← Back
         </a>
+        {% if request.user == tasks.creator %}
+            <a class="btn edit" href="{% url 'tasks:task_update' tasks.pk %}">
+                ✏ Update
+            </a>
 
-        <a class="btn edit" href="{% url 'tasks:task_update' tasks.pk %}">
-            ✏ Update
-        </a>
-
-        <a class="btn delete" href="{% url 'tasks:task_delete' tasks.pk %}">
-            🗑 Delete
-        </a>
+            <a class="btn delete" href="{% url 'tasks:task_delete' tasks.pk %}">
+                🗑 Delete
+            </a>
+        {% endif %}
         
         <a class="btn edit" href="{% url 'tasks:comment_list' tasks.pk %}">
             ✏ Comment
@@ -182,6 +183,11 @@
             {{ tasks.created_at }}
         </div>
 
+        <div class="info date">
+            <span class="label">📅 due_date:</span>
+            {{ tasks.due_date }}
+        </div>
+
         <hr>
 
         <div class="info">
@@ -196,6 +202,9 @@
             <span class="badge">
                 {{ tasks.get_priority_display|default:tasks.priority }}
             </span>
+        </div>
+        <div>
+            
         </div>
 
     </div>

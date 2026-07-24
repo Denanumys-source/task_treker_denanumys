@@ -8,13 +8,17 @@ class UserIsOwnerMixin(object):
     def dispatch(self, request, *args, **kwargs):
         obj = self.get_object()
         if getattr(obj,self.owner_field) != request.user:
-            redirect('auth_system:login')
             raise PermissionDenied
+            
         
         return super().dispatch(request, *args, **kwargs)
 class HiMessageMixin:
+    text_mixin = None
     def dispatch(self, request, *args, **kwargs):
-        instance = self.get_object()
-        success(request, f"Привіт, {request.user.username}!")
+        text = self.text_mixin
+        success(request,text)
         return super().dispatch(request,*args,**kwargs)
+    def handle_no_premision(self):
+        messages.error(self.request, self.text_mixin)
+        return super().handle_no_permission()
         

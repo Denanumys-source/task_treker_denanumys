@@ -131,6 +131,42 @@
             margin-top:40px;
         }
 
+        .btn {
+            padding: 8px 16px;
+            border: 2px solid #28a745;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: 0.3s;
+        }
+
+        .btn-sm {
+            padding: 5px 10px;
+            font-size: 13px;
+        }
+
+        .btn-success {
+            background-color: #28a745;
+            color: white;
+            border-color: #28a745;
+        }
+
+        .btn-success:hover {
+            background-color: #218838;
+            border-color: #218838;
+        }
+
+        .btn-outline-success {
+            background-color: transparent;
+            color: #28a745;
+            border-color: #28a745;
+        }
+
+        .btn-outline-success:hover {
+            background-color: #28a745;
+            color: white;
+        }
+
     </style>
 
 </head>
@@ -143,7 +179,7 @@
         💬 Comments
     </div>
 
-    <a class="btn" href="{% url 'tasks:task_detail' task.pk %}">
+    <a class="btn" href="{% url 'tasks:task_detail' tasks.pk %}">
         ← Back to Task
     </a>
 
@@ -151,7 +187,7 @@
 
 <div class="container">
 
-    <a class="create" href="{% url 'tasks:comment_create' task.pk %}">
+    <a class="create" href="{% url 'tasks:comment_create' tasks.pk %}">
         ➕ Add Comment
     </a>
 
@@ -170,16 +206,24 @@
         <div class="text">
             {{ comment.content }}
         </div>
+        <form method="post" action="{% url 'tasks:comment_like' tasks.pk comment.pk %}" style="display:inline;">
+            {% csrf_token %}
+            <button type="submit" style="border:none; background:none; cursor:pointer; font-size:1em;">
+              {% if user in comment.liked_by.all %}❤️{{comment.liked_by.count}}{% else %}🤍{{comment.liked_by.count}}{% endif %}
+            </button>
+            {{ message|escapejs }}
+            
 
         <div class="actions">
+            {% if request.user == comment.author%}
+                <a class="edit" href="{% url 'tasks:comment_update' tasks.pk comment.pk %}">
+                    ✏ Edit
+                </a>
 
-            <a class="edit" >
-                ✏ Edit
-            </a>
-
-            <a class="delete" href="{% url 'tasks:comment_delete' task.pk comment.pk %}">
-                🗑 Delete
-            </a>
+                <a class="delete" href="{% url 'tasks:comment_delete' tasks.pk comment.pk %}">
+                    🗑 Delete
+                </a>
+            {% endif %}
         </div>
 
     </div>

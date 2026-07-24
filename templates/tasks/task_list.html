@@ -141,19 +141,90 @@
             margin-top:50px;
             color:#6b7280;
         }
+        .filter-box{
+            background:white;
+            padding:20px;
+            border-radius:15px;
+            box-shadow:0 10px 25px rgba(0,0,0,.08);
+            margin-bottom:30px;
+        }
 
+        .filter-title{
+            font-size:22px;
+            color:#2563eb;
+            margin-bottom:18px;
+            font-weight:bold;
+        }
+
+        .filter-form{
+            display:flex;
+            gap:15px;
+            align-items:flex-end;
+            flex-wrap:wrap;
+        }
+
+        .filter-item{
+            display:flex;
+            flex-direction:column;
+        }
+
+        .filter-item label{
+            margin-bottom:8px;
+            font-weight:bold;
+            color:#374151;
+        }
+
+        .filter-item select,
+        .filter-item input{
+            min-width:200px;
+            padding:10px 14px;
+            border:2px solid #d1d5db;
+            border-radius:10px;
+            font-size:15px;
+            transition:.2s;
+        }
+
+        .filter-item select:focus,
+        .filter-item input:focus{
+            outline:none;
+            border-color:#2563eb;
+            box-shadow:0 0 8px rgba(37,99,235,.2);
+        }
+
+        .filter-btn{
+            background:#2563eb;
+            color:white;
+            border:none;
+            padding:12px 22px;
+            border-radius:10px;
+            cursor:pointer;
+            font-size:15px;
+            font-weight:bold;
+            transition:.25s;
+        }
+
+        .filter-btn:hover{
+            background:#1d4ed8;
+        }
+
+        .reset-btn{
+            background:#ef4444;
+            color:white;
+            text-decoration:none;
+            padding:12px 22px;
+            border-radius:10px;
+            font-weight:bold;
+            transition:.25s;
+        }
+
+        .reset-btn:hover{
+            background:#dc2626;
+        }
     </style>
 </head>
 
 <body>
 
-{% if messages %}
-    {% for message in messages %}
-        <script>
-            alert("{{ message|escapejs }}");
-        </script>
-    {% endfor %}
-{% endif %}
 
 <header>
 
@@ -182,6 +253,10 @@
                 Login
             </a>
 
+             <a class="btn" href="admin/">
+                Admin
+            </a>
+
         {% endif %}
 
     </div>
@@ -189,7 +264,32 @@
 </header>
 
 <div class="container">
+        <div class="filter-box">
 
+        <div class="filter-title">
+            🔍 Фільтрація завдань
+        </div>
+
+        <form method="get" class="filter-form">
+
+            {% for field in form %}
+                <div class="filter-item">
+                    {{ field.label_tag }}
+                    {{ field }}
+                </div>
+            {% endfor %}
+
+            <button type="submit" class="filter-btn">
+                🔎 Фільтрувати
+            </button>
+
+            <a href="{% url 'tasks:task_list' %}" class="reset-btn">
+                ✖ Скинути
+            </a>
+
+        </form>
+
+        </div>
     <a class="create" href="{% url 'tasks:task_create' %}">
         + Create Task
     </a>
@@ -217,7 +317,6 @@
                     <div class="priority">
                         ⚡ {{ t.get_priority_display|default:t.priority }}
                     </div>
-
                 </a>
 
             </div>
